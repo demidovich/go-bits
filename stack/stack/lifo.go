@@ -2,6 +2,7 @@ package stack
 
 import "sync"
 
+// New LIFO stack
 func NewLifo() lifo {
 	return lifo{}
 }
@@ -12,38 +13,38 @@ type lifo struct {
 }
 
 // Put element to stack
-func (l *lifo) Put(value int) {
-	l.mu.Lock()
-	defer l.mu.Unlock()
+func (stack *lifo) Put(value int) {
+	stack.mu.Lock()
+	defer stack.mu.Unlock()
 
 	item := LifoItem{Value: value}
-	if l.tail != nil {
-		item.Prev = l.tail
+	if stack.tail != nil {
+		item.Prev = stack.tail
 	}
-	l.tail = &item
+	stack.tail = &item
 }
 
 // Fetch element from stack
 //
 // ok - indicates that the result is not empty
-func (l *lifo) Fetch() (item LifoItem, ok bool) {
-	l.mu.Lock()
-	defer l.mu.Unlock()
+func (stack *lifo) Fetch() (item LifoItem, ok bool) {
+	stack.mu.Lock()
+	defer stack.mu.Unlock()
 
-	if l.tail == nil {
+	if stack.tail == nil {
 		return
 	}
 
-	item = *l.tail
+	item = *stack.tail
 	ok = true
 
-	if l.tail.Prev == nil {
-		l.tail = nil
+	if stack.tail.Prev == nil {
+		stack.tail = nil
 	} else {
-		l.tail = l.tail.Prev
+		stack.tail = stack.tail.Prev
 	}
 
-	return item, true
+	return
 }
 
 type LifoItem struct {

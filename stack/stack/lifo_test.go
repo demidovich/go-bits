@@ -6,7 +6,7 @@ import (
 	"github.com/stretchr/testify/require"
 )
 
-func Test(t *testing.T) {
+func TestStackLifo(t *testing.T) {
 	s := NewLifo()
 	s.Put(10)
 	s.Put(20)
