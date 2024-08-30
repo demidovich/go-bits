@@ -1,15 +1,21 @@
 package stack
 
+import "sync"
+
 func NewLifo() lifo {
 	return lifo{}
 }
 
 type lifo struct {
+	mu   sync.Mutex
 	tail *LifoItem
 }
 
-// Put element to stach
+// Put element to stack
 func (l *lifo) Put(value int) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
 	item := LifoItem{Value: value}
 	if l.tail != nil {
 		item.Prev = l.tail
@@ -21,6 +27,9 @@ func (l *lifo) Put(value int) {
 //
 // ok - indicates that the result is not empty
 func (l *lifo) Fetch() (item LifoItem, ok bool) {
+	l.mu.Lock()
+	defer l.mu.Unlock()
+
 	if l.tail == nil {
 		return
 	}
