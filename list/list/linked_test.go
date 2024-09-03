@@ -27,3 +27,15 @@ func TestAddToTail(t *testing.T) {
 	assert.Equal(t, 20, l.Head.Next.Value)
 	assert.Equal(t, 30, l.Head.Next.Next.Value)
 }
+
+func TestToReverseList(t *testing.T) {
+	l := NewLinked()
+	l.AddToHead(10)
+	l.AddToHead(20)
+	l.AddToHead(30)
+
+	r := l.ToReverseList()
+	assert.Equal(t, 30, r.Head.Value)
+	assert.Equal(t, 20, r.Head.Next.Value)
+	assert.Equal(t, 10, r.Head.Next.Next.Value)
+}

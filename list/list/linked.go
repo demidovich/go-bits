@@ -52,3 +52,22 @@ func (list *linked) Tail() (item *LinkedItem, ok bool) {
 
 	return
 }
+
+func (list *linked) ToReverseList() linked {
+	reverse := NewLinked()
+
+	item := list.Head
+	if item == nil {
+		return reverse
+	}
+
+	for {
+		reverse.AddToTail(item.Value)
+		item = item.Next
+		if item == nil {
+			break
+		}
+	}
+
+	return reverse
+}
