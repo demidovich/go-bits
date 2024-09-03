@@ -24,10 +24,10 @@ func (stack *lifo) Put(value int) {
 	stack.tail = &item
 }
 
-// Fetch element from stack
+// Pop element from stack
 //
 // ok - indicates that the result is not empty
-func (stack *lifo) Fetch() (item LifoItem, ok bool) {
+func (stack *lifo) Pop() (item LifoItem, ok bool) {
 	stack.mu.Lock()
 	defer stack.mu.Unlock()
 

@@ -32,10 +32,10 @@ func (stack *fifo) Put(value int) {
 	stack.tail = &item
 }
 
-// Fetch element from stack
+// Pop element from stack
 //
 // ok - indicates that the result is not empty
-func (stack *fifo) Fetch() (item FifoItem, ok bool) {
+func (stack *fifo) Pop() (item FifoItem, ok bool) {
 	stack.mu.Lock()
 	defer stack.mu.Unlock()
 

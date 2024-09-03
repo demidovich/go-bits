@@ -11,14 +11,14 @@ func TestStackFifo(t *testing.T) {
 	s.Put(10)
 	s.Put(20)
 
-	item, ok := s.Fetch()
+	item, ok := s.Pop()
 	require.Equal(t, 10, item.Value)
 	require.Equal(t, true, ok)
 
-	item, ok = s.Fetch()
+	item, ok = s.Pop()
 	require.Equal(t, 20, item.Value)
 	require.Equal(t, true, ok)
 
-	_, ok = s.Fetch()
+	_, ok = s.Pop()
 	require.Equal(t, false, ok)
 }

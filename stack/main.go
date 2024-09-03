@@ -17,7 +17,7 @@ func LifoStackExample() {
 	s.Put(333)
 
 	for {
-		item, ok := s.Fetch()
+		item, ok := s.Pop()
 		if !ok {
 			break
 		}
@@ -32,7 +32,7 @@ func FifoStackExample() {
 	s.Put(333)
 
 	for {
-		item, ok := s.Fetch()
+		item, ok := s.Pop()
 		if !ok {
 			break
 		}
