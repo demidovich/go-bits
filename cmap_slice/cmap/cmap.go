@@ -4,7 +4,7 @@ Custom Map имени 20-го съезда велосипедостроител�
 package cmap
 
 import (
-	"strconv"
+	"hash/fnv"
 )
 
 const INIT_BUCKETS = 1
@@ -66,8 +66,10 @@ func (m *Cmap) Get(key string) (value CmapValue, ok bool) {
 }
 
 func bucketIndex(size int, key string) int {
-	h, _ := strconv.Atoi(key)
-	return h % size
+	h := fnv.New32a()
+	h.Write([]byte(key))
+
+	return int(h.Sum32()) % size
 }
 
 func (m *Cmap) item(key string) (*item, bool) {
