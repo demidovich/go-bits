@@ -8,13 +8,11 @@ import (
 	"hash/fnv"
 )
 
-const INIT_SIZE = 1
-const MAX_LIST_SIZE = 4
-
 type Cmap struct {
-	size     int
-	items    []*cmapItem
-	listSize int
+	size          int
+	listSizeLimit int
+	items         []*cmapItem
+	listSize      int
 }
 
 type cmapItem struct {
@@ -25,10 +23,31 @@ type cmapItem struct {
 
 type CmapValue int
 
-func NewCmap() Cmap {
+type CmapConfig struct {
+	InitSize      uint
+	ListSizeLimit uint
+}
+
+func New() Cmap {
 	return Cmap{
-		size:  INIT_SIZE,
-		items: make([]*cmapItem, INIT_SIZE),
+		size:          1,
+		listSizeLimit: 4,
+		items:         make([]*cmapItem, 1),
+	}
+}
+
+func NewWithConfig(c CmapConfig) Cmap {
+	if c.InitSize < 1 {
+		panic("cmap InitSize less than 1")
+	}
+	if c.ListSizeLimit < 1 {
+		panic("cmap ListSizeLimit less than 1")
+	}
+
+	return Cmap{
+		size:          int(c.InitSize),
+		listSizeLimit: int(c.ListSizeLimit),
+		items:         make([]*cmapItem, int(c.InitSize)),
 	}
 }
 
@@ -94,7 +113,7 @@ func itemIndex(size int, key string) int {
 // rebalance
 
 func (m *Cmap) rebalance() {
-	if m.listSize < MAX_LIST_SIZE {
+	if m.listSize < m.listSizeLimit {
 		return
 	}
 

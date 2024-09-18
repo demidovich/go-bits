@@ -5,7 +5,7 @@ import (
 )
 
 func main() {
-	m := cmap.NewCmap()
+	m := cmap.New()
 	// m.Debug()
 
 	m.Set("k1", 1)

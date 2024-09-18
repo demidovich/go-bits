@@ -6,8 +6,23 @@ import (
 	"github.com/stretchr/testify/assert"
 )
 
+func TestNewWithConfig(t *testing.T) {
+	m := NewWithConfig(
+		CmapConfig{
+			InitSize:      1,
+			ListSizeLimit: 1,
+		},
+	)
+
+	m.Set("k1", 1)
+	v1, ok := m.Get("k1")
+
+	assert.Equal(t, 1, int(v1))
+	assert.True(t, ok)
+}
+
 func TestSetGet(t *testing.T) {
-	m := NewCmap()
+	m := New()
 	m.Set("k1", 10)
 	value, ok := m.Get("k1")
 
@@ -15,8 +30,8 @@ func TestSetGet(t *testing.T) {
 	assert.Equal(t, 10, int(value))
 }
 
-func TestOverwrite(t *testing.T) {
-	m := NewCmap()
+func TestSetOverwrite(t *testing.T) {
+	m := New()
 	m.Set("k1", 10)
 	m.Set("k1", 20)
 	value, ok := m.Get("k1")
@@ -26,7 +41,7 @@ func TestOverwrite(t *testing.T) {
 }
 
 func TestGetDeepItem(t *testing.T) {
-	m := NewCmap()
+	m := New()
 	m.Set("k1", 10)
 	m.Set("k2", 20)
 	m.Set("k3", 30)
@@ -38,7 +53,12 @@ func TestGetDeepItem(t *testing.T) {
 }
 
 func TestRebalance(t *testing.T) {
-	m := NewCmap()
+	m := NewWithConfig(
+		CmapConfig{
+			InitSize:      1,
+			ListSizeLimit: 4,
+		},
+	)
 
 	m.Set("k1", 1)
 	m.Set("k2", 2)
