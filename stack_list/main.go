@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"structures/stack/stack"
+	"structures/stack_list/stack"
 )
 
 func main() {
