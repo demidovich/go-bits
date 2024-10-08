@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"structures/cmap_slice/cmap"
+	"go-bits/structures/cmap_slice/cmap"
 )
 
 func main() {

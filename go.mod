@@ -1,4 +1,4 @@
-module structures
+module go-bits
 
 go 1.22.6
 

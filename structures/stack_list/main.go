@@ -2,7 +2,7 @@ package main
 
 import (
 	"fmt"
-	"structures/stack_list/stack"
+	"go-bits/structures/stack_list/stack"
 )
 
 func main() {

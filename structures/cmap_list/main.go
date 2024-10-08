@@ -1,8 +1,6 @@
 package main
 
-import (
-	"structures/cmap_list/cmap"
-)
+import "go-bits/structures/cmap_list/cmap"
 
 func main() {
 	m := cmap.New()
