@@ -5,43 +5,63 @@
 // Однака, чтобы уменьшить нагрузку на систему вы хотите уменьшить количество
 // одновременно работающих горутин
 
-// Версия с выводом результатов работы воркеров в канал string
+// Версия с выводом результатов работы воркеров в канал стуктурой Result
+// Result может содержать как Success так и Failed
 
 package main
 
 import (
 	"fmt"
-	"go-bits/concurrency/worker_pool/pool"
+	"go-bits/concurrency/worker_pool_timeout/pool"
 	"strconv"
+	"time"
 
 	"github.com/google/uuid"
 )
 
 const (
-	workersCount = 10
-	tasksCount   = 100
+	workersCount       = 10
+	tasksCount         = 100
+	taskTimeoutSeconds = 1
 )
 
 func main() {
 
 	tasks := make(chan pool.Task)
-	results := pool.Start(workersCount, tasks)
+	results := pool.Start(workersCount, taskTimeoutSeconds*time.Second, tasks)
 
 	// listen results
 	go func() {
-		for msg := range results {
-			fmt.Println(msg)
+		for result := range results {
+			printResult(result)
 		}
 	}()
 
 	// fake task generator
 	for i := 0; i < tasksCount; i++ {
 		task := pool.Task{
-			Id:   uuid.New(),
-			File: strconv.Itoa(i),
+			Id:       uuid.New(),
+			Filepath: strconv.Itoa(i),
 		}
 		tasks <- task
 	}
 
 	close(tasks)
+}
+
+func printResult(result pool.Result) {
+	var message string
+	if result.Err == nil {
+		message = "success"
+	} else {
+		message = result.Err.Error()
+	}
+
+	fmt.Printf(
+		"worker: %d, task: %s, file: %s, result: %s\n",
+		result.WorkerNum,
+		result.TaskId,
+		result.Filepath,
+		message,
+	)
 }
