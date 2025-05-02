@@ -17,7 +17,7 @@ func Start(workersCount int, tasks <-chan Task) <-chan string {
 	results := make(chan string)
 
 	wg := sync.WaitGroup{}
-	for num := 0; num < workersCount; num++ {
+	for num := range workersCount {
 		wg.Add(1)
 		go func(num int) {
 			defer wg.Done()

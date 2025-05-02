@@ -44,7 +44,7 @@ func producer(num int, latency time.Duration) <-chan string {
 
 	go func() {
 		defer close(ch)
-		for i := 0; i < 10; i++ {
+		for i := range 10 {
 			time.Sleep(latency)
 			ch <- fmt.Sprintf("producer %d, value %d", num, i)
 		}

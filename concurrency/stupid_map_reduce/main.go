@@ -18,7 +18,7 @@ func main() {
 	workerResult := make(chan int)
 	wg := sync.WaitGroup{}
 
-	for i := 0; i < workers; i++ {
+	for range workers {
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
@@ -52,7 +52,7 @@ func valuesGenerator(valuesCount int) <-chan int {
 	ch := make(chan int)
 	go func() {
 		defer close(ch)
-		for i := 0; i < valuesCount; i++ {
+		for i := range valuesCount {
 			ch <- i
 		}
 	}()

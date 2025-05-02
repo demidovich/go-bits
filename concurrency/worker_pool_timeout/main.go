@@ -38,7 +38,7 @@ func main() {
 	}()
 
 	// fake task generator
-	for i := 0; i < tasksCount; i++ {
+	for i := range tasksCount {
 		task := pool.Task{
 			Id:       uuid.New(),
 			Filepath: strconv.Itoa(i),

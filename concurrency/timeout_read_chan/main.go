@@ -15,7 +15,7 @@ func readMessages(timeout time.Duration) <-chan string {
 	out := make(chan string)
 
 	go func(out chan<- string) {
-		for i := 0; i < 1000; i++ {
+		for i := range 1000 {
 			time.Sleep(time.Millisecond * 100)
 			out <- fmt.Sprintf("какие-то данные %d", i)
 		}

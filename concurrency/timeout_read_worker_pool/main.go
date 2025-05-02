@@ -23,7 +23,7 @@ func request(ttl time.Duration) []string {
 	timeout := time.After(ttl)
 
 loop:
-	for i := 0; i < 3; i++ {
+	for range 3 {
 		select {
 		case v := <-ch:
 			results = append(results, v)
