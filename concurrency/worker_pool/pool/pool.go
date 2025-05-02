@@ -1,7 +1,7 @@
 package pool
 
 import (
-	"fmt"
+	"math/rand"
 	"sync"
 	"time"
 
@@ -9,19 +9,24 @@ import (
 )
 
 type Task struct {
-	Id   uuid.UUID
-	File string
+	Id       uuid.UUID
+	Filepath string
 }
 
-func Start(workersCount int, tasks <-chan Task) <-chan string {
-	results := make(chan string)
+func Start(workersCount int, taskTTL time.Duration, tasks <-chan Task) <-chan Result {
+	results := make(chan Result)
 
 	wg := sync.WaitGroup{}
 	for num := range workersCount {
 		wg.Add(1)
 		go func(num int) {
 			defer wg.Done()
-			startWorker(num, tasks, results)
+			startWorker(
+				num,
+				taskTTL,
+				tasks,
+				results,
+			)
 		}(num)
 	}
 
@@ -35,10 +40,10 @@ func Start(workersCount int, tasks <-chan Task) <-chan string {
 
 type worker struct {
 	num     int
-	results chan<- string
+	results chan<- Result
 }
 
-func startWorker(num int, tasks <-chan Task, results chan<- string) {
+func startWorker(num int, taskTimeout time.Duration, tasks <-chan Task, results chan<- Result) {
 	w := worker{
 		num:     num,
 		results: results,
@@ -50,6 +55,19 @@ func startWorker(num int, tasks <-chan Task, results chan<- string) {
 }
 
 func (w *worker) processImage(task Task) {
-	time.Sleep(time.Millisecond * 100)
-	w.results <- fmt.Sprintf("worker %d, task %s, file %s", w.num, task.Id, task.File)
+	runtime := rand.Intn(3000-500) + 500
+	time.Sleep(time.Millisecond * time.Duration(runtime))
+
+	w.results <- Result{
+		WorkerNum: w.num,
+		TaskId:    task.Id.String(),
+		Filepath:  task.Filepath,
+	}
+}
+
+type Result struct {
+	WorkerNum int
+	TaskId    string
+	Filepath  string
+	Err       error
 }
