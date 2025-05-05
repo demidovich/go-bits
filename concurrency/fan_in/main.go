@@ -8,28 +8,31 @@ import (
 )
 
 func main() {
-	w1 := worker(1, 10)
-	w2 := worker(2, 10)
-	w3 := worker(3, 10)
+	ch1 := fakeGenerator(1, 10)
+	ch2 := fakeGenerator(2, 10)
+	ch3 := fakeGenerator(3, 10)
 
-	out := merge(w1, w2, w3)
+	out := mergeChannels(ch1, ch2, ch3)
 
 	for v := range out {
 		fmt.Println(v)
 	}
 }
 
-func merge(in ...<-chan string) <-chan string {
-	out := make(chan string)
+func mergeChannels[T any](in ...<-chan T) <-chan T {
+	out := make(chan T)
 	wg := sync.WaitGroup{}
 
-	for _, ch := range in {
-		ch := ch
+	for _, channel := range in {
+		if channel == nil {
+			continue
+		}
+
 		wg.Add(1)
 		go func() {
 			defer wg.Done()
-			for v := range ch {
-				out <- v
+			for value := range channel {
+				out <- value
 			}
 		}()
 	}
@@ -42,16 +45,16 @@ func merge(in ...<-chan string) <-chan string {
 	return out
 }
 
-func worker(num, tasks int) <-chan string {
-	ch := make(chan string)
+func fakeGenerator(num, countTasks int) <-chan string {
+	out := make(chan string)
 
 	go func() {
-		defer close(ch)
-		for i := range tasks {
+		defer close(out)
+		for i := range countTasks {
 			time.Sleep(time.Duration(rand.Intn(1000)) * time.Millisecond)
-			ch <- fmt.Sprintf("worker %d, job %d", num, i)
+			out <- fmt.Sprintf("worker %d, job %d", num, i)
 		}
 	}()
 
-	return ch
+	return out
 }
