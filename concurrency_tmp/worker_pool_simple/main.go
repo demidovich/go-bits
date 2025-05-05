@@ -11,7 +11,7 @@ package main
 
 import (
 	"fmt"
-	"go-bits/concurrency/worker_pool_simple/pool"
+	"go-bits/concurrency_tmp/worker_pool_simple/pool"
 	"strconv"
 
 	"github.com/google/uuid"
