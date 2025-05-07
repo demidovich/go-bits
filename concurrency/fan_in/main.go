@@ -1,3 +1,5 @@
+// Объединение данных из нескольких каналов в один
+
 package main
 
 import (
@@ -8,9 +10,9 @@ import (
 )
 
 func main() {
-	ch1 := fakeGenerator(1, 10)
-	ch2 := fakeGenerator(2, 10)
-	ch3 := fakeGenerator(3, 10)
+	ch1 := fakeJobsGenerator(1, 10)
+	ch2 := fakeJobsGenerator(2, 10)
+	ch3 := fakeJobsGenerator(3, 10)
 
 	out := mergeChannels(ch1, ch2, ch3)
 
@@ -45,7 +47,7 @@ func mergeChannels[T any](in ...<-chan T) <-chan T {
 	return out
 }
 
-func fakeGenerator(num, countTasks int) <-chan string {
+func fakeJobsGenerator(num, countTasks int) <-chan string {
 	out := make(chan string)
 
 	go func() {
