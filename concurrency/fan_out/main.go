@@ -40,20 +40,22 @@ func splitChannel[T any](in <-chan T, num int) []<-chan T {
 	}
 
 	go func() {
+		defer func() {
+			for _, channel := range out {
+				close(channel)
+			}
+		}()
+
 		i := 0
 		for value := range in {
-			out[i] <- value
+			out[i] <- value // Блокирующий вызов
 			i = (i + 1) % num
-		}
-
-		for _, channel := range out {
-			close(channel)
 		}
 	}()
 
-	outRO := make([]<-chan T, 0, num)
-	for _, c := range out {
-		outRO = append(outRO, c)
+	outRO := make([]<-chan T, num)
+	for i := range out {
+		outRO[i] = out[i]
 	}
 
 	return outRO
@@ -64,6 +66,7 @@ func fakeJobsGenerator(countTasks int) <-chan string {
 
 	go func() {
 		defer close(out)
+
 		for i := range countTasks {
 			time.Sleep(time.Duration(rand.Intn(100)) * time.Millisecond)
 			out <- fmt.Sprintf("job %d", i)
