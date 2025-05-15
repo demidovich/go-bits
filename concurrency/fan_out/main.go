@@ -1,4 +1,10 @@
 // Распределение данных из одного канала на несколько
+//
+//          ┌─ channel 1
+//          │
+// channel ─┼─ channel 2
+//          │
+//          └─ channel 3
 
 package main
 
