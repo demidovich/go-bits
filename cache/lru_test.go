@@ -67,3 +67,14 @@ func TestHotElement(t *testing.T) {
 	_, ok2 := cache.Get("2")
 	assert.False(t, ok2)
 }
+
+func TestSize(t *testing.T) {
+	cache := NewLRU(2)
+	assert.Equal(t, 0, cache.Size())
+
+	cache.Set("1", "a")
+	assert.Equal(t, 1, cache.Size())
+
+	cache.Remove("1")
+	assert.Equal(t, 0, cache.Size())
+}

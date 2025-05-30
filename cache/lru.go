@@ -94,6 +94,10 @@ func (c *lru) Remove(key string) {
 	}
 }
 
+func (c *lru) Size() int {
+	return len(c.keys)
+}
+
 func (c *lru) releaseLocked() {
 	for len(c.keys) >= c.capacity {
 		listTail := c.list.Back()
