@@ -1,4 +1,10 @@
 // Объединение данных из нескольких каналов в один
+//
+// channel 1 ─┐
+//            │
+// channel 2 ─┼─ channel
+//            │
+// channel 3 ─┘
 
 package main
 
