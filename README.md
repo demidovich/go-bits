@@ -2,14 +2,17 @@
 
 Реализации структур данных и конкурентных паттернов. Репозиторий не несет никакой практической пользы и создан в рамках изучения языка.
 
-### Concurrency
+### concurrency
 
 * __fan_in__
+* __fan_out__
+* __filter__
+* __semaphore__
+* __tee__
+* __transformer__
 
-### Structures
+### structures
 
-* __cmap_list__ - мапа на связанном списке
-* __cmap_slice__ - мапа на слайсе
-* __list__ - связанный список
-* __stack_list__ - стэк LIFO и FIFO на связанном списке
-* __stack_slice__ - стэк LIFO и FIFO на слайсе
+* __stack_lifo_slice__ - стэк LIFO на слайсе
+* __stack_fifo_slice__ - стэк FIFO на слайсе
+
