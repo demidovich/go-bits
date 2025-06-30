@@ -23,5 +23,8 @@ nbproject
 *.so
 *.dylib
 
+# Vendor
+vendor
+
 # Test binary, built with `go test -c`
 *.test
