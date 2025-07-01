@@ -16,3 +16,6 @@
 * __stack_lifo_slice__ - стэк LIFO на слайсе
 * __stack_fifo_slice__ - стэк FIFO на слайсе
 
+### keyvalue
+
+Хранилище keyvalue с сегментацией на бакеты.
