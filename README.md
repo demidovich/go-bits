@@ -13,6 +13,7 @@
 
 ### structures
 
+* __list__ - двухсвязный список
 * __stack_lifo_slice__ - стэк LIFO на слайсе
 * __stack_fifo_slice__ - стэк FIFO на слайсе
 
