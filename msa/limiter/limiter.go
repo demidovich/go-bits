@@ -7,6 +7,7 @@ import (
 )
 
 type Limiter struct {
+	tokens int
 	bucket chan struct{}
 }
 
@@ -25,6 +26,7 @@ func New(ctx context.Context, cfg Config) (*Limiter, error) {
 	}
 
 	l := Limiter{
+		tokens: cfg.Tokens,
 		bucket: make(chan struct{}, cfg.Tokens),
 	}
 
@@ -59,7 +61,7 @@ func (l *Limiter) initRefiller(ctx context.Context, interval time.Duration) {
 }
 
 func (l *Limiter) refill() {
-	for {
+	for range l.tokens {
 		select {
 		case l.bucket <- struct{}{}:
 		default:
