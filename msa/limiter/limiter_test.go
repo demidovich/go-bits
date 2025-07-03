@@ -19,6 +19,25 @@ func Test_ConfigBadTokensCount(t *testing.T) {
 	assert.NotNil(t, err)
 }
 
+func Test_SetDefaultInterval(t *testing.T) {
+	SetDefaultInterval(1000 * time.Second)
+
+	assert.Equal(t, 1000, int(defaultInterval.Seconds()))
+}
+
+func Test_SetDefaultTokens(t *testing.T) {
+	SetDefaultTokens(1)
+
+	assert.Equal(t, 1, defaultTokens)
+}
+
+func Test_NewDefault(t *testing.T) {
+	l, err := NewDefault(t.Context())
+
+	assert.NotNil(t, l)
+	assert.Nil(t, err)
+}
+
 func Test_Allow(t *testing.T) {
 	l, _ := newTestingLimiter(t, 1*time.Second, 2)
 

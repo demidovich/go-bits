@@ -6,6 +6,11 @@ import (
 	"time"
 )
 
+var (
+	defaultTokens   = 100
+	defaultInterval = 1 * time.Second
+)
+
 type Limiter struct {
 	tokens int
 	bucket chan struct{}
@@ -14,6 +19,23 @@ type Limiter struct {
 type Config struct {
 	Interval time.Duration
 	Tokens   int
+}
+
+func SetDefaultTokens(val int) {
+	defaultTokens = val
+}
+
+func SetDefaultInterval(val time.Duration) {
+	defaultInterval = val
+}
+
+func NewDefault(ctx context.Context) (*Limiter, error) {
+	l, err := New(ctx, Config{
+		Interval: defaultInterval,
+		Tokens:   defaultTokens,
+	})
+
+	return l, err
 }
 
 func New(ctx context.Context, cfg Config) (*Limiter, error) {
